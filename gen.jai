@@ -24,7 +24,10 @@ gen :: () {
 
         array_add(*libpaths,       ".");
         array_add(*libnames,      "libfive");
+        array_add(*libnames,      "libfive-stdlib");
         array_add(*source_files,  "libfive.h");
+        array_add(*source_files,  "libfive_stdlib.h");
+
         array_add(*extra_clang_arguments, "-x", "c");
 
         // strip_flags &= ~(Strip_Flags.CONSTRUCTORS | .DESTRUCTORS);

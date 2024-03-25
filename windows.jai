@@ -6,6 +6,8 @@
 
 
 
+LIBFIVE_STDLIB :: libfive_tree;
+
 /*
 *  libfive_interval is a range used in interval arithmetic
 *  It usually represents either a spatial region (along a single axis)
@@ -435,11 +437,197 @@ libfive_git_revision :: () -> *u8 #foreign libfive;
 */
 libfive_git_branch :: () -> *u8 #foreign libfive;
 
+// We accept trees for every argument, even those that would normally be
+// floats, so that we can pass in free variables to parameterize shapes.
+tvec2 :: struct {
+    x: libfive_tree;
+    y: libfive_tree;
+}
+
+tvec3 :: struct {
+    x: libfive_tree;
+    y: libfive_tree;
+    z: libfive_tree;
+}
+
+tfloat :: libfive_tree;
+
+////////////////////////////////////////////////////////////////////////////////
+_union :: (a: libfive_tree, b: libfive_tree) -> libfive_tree #foreign libfive_stdlib;
+
+intersection :: (a: libfive_tree, b: libfive_tree) -> libfive_tree #foreign libfive_stdlib;
+
+inverse :: (a: libfive_tree) -> libfive_tree #foreign libfive_stdlib;
+
+difference :: (a: libfive_tree, b: libfive_tree) -> libfive_tree #foreign libfive_stdlib;
+
+offset :: (a: libfive_tree, o: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+clearance :: (a: libfive_tree, b: libfive_tree, offset: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+shell :: (a: libfive_tree, offset: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+blend_expt :: (a: libfive_tree, b: libfive_tree, m: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+blend_expt_unit :: (a: libfive_tree, b: libfive_tree, m: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+blend_rough :: (a: libfive_tree, b: libfive_tree, m: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+blend_difference :: (a: libfive_tree, b: libfive_tree, m: tfloat, o__0: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+morph :: (a: libfive_tree, b: libfive_tree, m: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+loft :: (a: libfive_tree, b: libfive_tree, zmin: tfloat, zmax: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+loft_between :: (a: libfive_tree, b: libfive_tree, lower: tvec3, upper: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+////////////////////////////////////////////////////////////////////////////////
+circle :: (r: tfloat, center__0: tvec2) -> libfive_tree #foreign libfive_stdlib;
+
+ring :: (ro: tfloat, ri: tfloat, center__0: tvec2) -> libfive_tree #foreign libfive_stdlib;
+
+polygon :: (r: tfloat, n: s32, center__0: tvec2) -> libfive_tree #foreign libfive_stdlib;
+
+rectangle :: (a: tvec2, b: tvec2) -> libfive_tree #foreign libfive_stdlib;
+
+rounded_rectangle :: (a: tvec2, b: tvec2, r: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+rectangle_exact :: (a: tvec2, b: tvec2) -> libfive_tree #foreign libfive_stdlib;
+
+rectangle_centered_exact :: (size: tvec2, center__0: tvec2) -> libfive_tree #foreign libfive_stdlib;
+
+triangle :: (a: tvec2, b: tvec2, c: tvec2) -> libfive_tree #foreign libfive_stdlib;
+
+box_mitered :: (a: tvec3, b: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+box_mitered_centered :: (size: tvec3, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+box_exact_centered :: (size: tvec3, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+box_exact :: (a: tvec3, b: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+rounded_box :: (a: tvec3, b: tvec3, r: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+sphere :: (radius: tfloat, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+half_space :: (norm: tvec3, point__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+cylinder_z :: (r: tfloat, h: tfloat, base__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+cone_ang_z :: (angle: tfloat, height: tfloat, base__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+cone_z :: (radius: tfloat, height: tfloat, base__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+pyramid_z :: (a: tvec2, b: tvec2, zmin: tfloat, height: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+torus_z :: (ro: tfloat, ri: tfloat, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+gyroid :: (period: tvec3, thickness: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+emptiness :: (__args: ..Any) -> libfive_tree #foreign libfive_stdlib;
+
+array_x :: (shape: libfive_tree, nx: s32, dx: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+array_xy :: (shape: libfive_tree, nx: s32, ny: s32, delta: tvec2) -> libfive_tree #foreign libfive_stdlib;
+
+array_xyz :: (shape: libfive_tree, nx: s32, ny: s32, nz: s32, delta: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+array_polar_z :: (shape: libfive_tree, n: s32, center__0: tvec2) -> libfive_tree #foreign libfive_stdlib;
+
+extrude_z :: (t: libfive_tree, zmin: tfloat, zmax: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+////////////////////////////////////////////////////////////////////////////////
+move :: (t: libfive_tree, offset: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+reflect_x :: (t: libfive_tree, x0__0: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+reflect_y :: (t: libfive_tree, y0__0: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+reflect_z :: (t: libfive_tree, z0__0: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+reflect_xy :: (t: libfive_tree) -> libfive_tree #foreign libfive_stdlib;
+
+reflect_yz :: (t: libfive_tree) -> libfive_tree #foreign libfive_stdlib;
+
+reflect_xz :: (t: libfive_tree) -> libfive_tree #foreign libfive_stdlib;
+
+symmetric_x :: (t: libfive_tree) -> libfive_tree #foreign libfive_stdlib;
+
+symmetric_y :: (t: libfive_tree) -> libfive_tree #foreign libfive_stdlib;
+
+symmetric_z :: (t: libfive_tree) -> libfive_tree #foreign libfive_stdlib;
+
+scale_x :: (t: libfive_tree, sx: tfloat, x0__0: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+scale_y :: (t: libfive_tree, sy: tfloat, y0__0: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+scale_z :: (t: libfive_tree, sz: tfloat, z0__0: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+scale_xyz :: (t: libfive_tree, s: tvec3, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+rotate_x :: (t: libfive_tree, angle: tfloat, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+rotate_y :: (t: libfive_tree, angle: tfloat, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+rotate_z :: (t: libfive_tree, angle: tfloat, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+taper_x_y :: (shape: libfive_tree, base: tvec2, h: tfloat, scale: tfloat, base_scale__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+taper_xy_z :: (shape: libfive_tree, base: tvec3, height: tfloat, scale: tfloat, base_scale__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+shear_x_y :: (t: libfive_tree, base: tvec2, height: tfloat, offset: tfloat, base_offset__0: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+repel :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+repel_x :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+repel_y :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+repel_z :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+repel_xy :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+repel_yz :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+repel_xz :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+attract :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+attract_x :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+attract_y :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+attract_z :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+attract_xy :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+attract_yz :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+attract_xz :: (shape: libfive_tree, locus: tvec3, radius: tfloat, exaggerate__1: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+revolve_y :: (shape: libfive_tree, x0__0: tfloat) -> libfive_tree #foreign libfive_stdlib;
+
+twirl_x :: (shape: libfive_tree, amount: tfloat, radius: tfloat, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+twirl_axis_x :: (shape: libfive_tree, amount: tfloat, radius: tfloat, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+twirl_y :: (shape: libfive_tree, amount: tfloat, radius: tfloat, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+twirl_axis_y :: (shape: libfive_tree, amount: tfloat, radius: tfloat, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+twirl_z :: (shape: libfive_tree, amount: tfloat, radius: tfloat, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+twirl_axis_z :: (shape: libfive_tree, amount: tfloat, radius: tfloat, center__0: tvec3) -> libfive_tree #foreign libfive_stdlib;
+
+////////////////////////////////////////////////////////////////////////////////
+text :: (txt: *u8, pos__0: tvec2) -> libfive_tree #foreign libfive_stdlib;
+
 #scope_file
 
 #import "Basic"; // For assert
 
 libfive :: #library,no_dll "./libfive";
+libfive_stdlib :: #library,no_dll "./libfive-stdlib";
 
 #run {
     {
@@ -597,6 +785,26 @@ libfive :: #library,no_dll "./libfive";
         assert(((cast(*void)(*instance.size)) - cast(*void)(*instance)) == 16, "libfive_vars.size has unexpected offset % instead of 16", ((cast(*void)(*instance.size)) - cast(*void)(*instance)));
         assert(size_of(type_of(libfive_vars.size)) == 4, "libfive_vars.size has unexpected size % instead of 4", size_of(type_of(libfive_vars.size)));
         assert(size_of(libfive_vars) == 24, "libfive_vars has size % instead of 24", size_of(libfive_vars));
+    }
+
+    {
+        instance: tvec2;
+        assert(((cast(*void)(*instance.x)) - cast(*void)(*instance)) == 0, "tvec2.x has unexpected offset % instead of 0", ((cast(*void)(*instance.x)) - cast(*void)(*instance)));
+        assert(size_of(type_of(tvec2.x)) == 8, "tvec2.x has unexpected size % instead of 8", size_of(type_of(tvec2.x)));
+        assert(((cast(*void)(*instance.y)) - cast(*void)(*instance)) == 8, "tvec2.y has unexpected offset % instead of 8", ((cast(*void)(*instance.y)) - cast(*void)(*instance)));
+        assert(size_of(type_of(tvec2.y)) == 8, "tvec2.y has unexpected size % instead of 8", size_of(type_of(tvec2.y)));
+        assert(size_of(tvec2) == 16, "tvec2 has size % instead of 16", size_of(tvec2));
+    }
+
+    {
+        instance: tvec3;
+        assert(((cast(*void)(*instance.x)) - cast(*void)(*instance)) == 0, "tvec3.x has unexpected offset % instead of 0", ((cast(*void)(*instance.x)) - cast(*void)(*instance)));
+        assert(size_of(type_of(tvec3.x)) == 8, "tvec3.x has unexpected size % instead of 8", size_of(type_of(tvec3.x)));
+        assert(((cast(*void)(*instance.y)) - cast(*void)(*instance)) == 8, "tvec3.y has unexpected offset % instead of 8", ((cast(*void)(*instance.y)) - cast(*void)(*instance)));
+        assert(size_of(type_of(tvec3.y)) == 8, "tvec3.y has unexpected size % instead of 8", size_of(type_of(tvec3.y)));
+        assert(((cast(*void)(*instance.z)) - cast(*void)(*instance)) == 16, "tvec3.z has unexpected offset % instead of 16", ((cast(*void)(*instance.z)) - cast(*void)(*instance)));
+        assert(size_of(type_of(tvec3.z)) == 8, "tvec3.z has unexpected size % instead of 8", size_of(type_of(tvec3.z)));
+        assert(size_of(tvec3) == 24, "tvec3 has size % instead of 24", size_of(tvec3));
     }
 }
 
